@@ -98,21 +98,21 @@ function updateSidebar() {
 }
 
 // Checkout logic
-function checkout() {
-    const totalItems = document.getElementById('totalItems').innerText;
-    if (totalItems == 0) {
-        alert("Your cart is empty! Add some coffee first.");
-    } else {
-        alert(`Thank you for your order! Processing ${totalItems} items.`);
-        // Reset cart after buying
-        for (let key in cart) cart[key] = 0;
-        renderProducts();
-        updateSidebar();
-    }
-}
+// function checkout() {
+//     const totalItems = document.getElementById('totalItems').innerText;
+//     if (totalItems == 0) {
+//         alert("Your cart is empty! Add some coffee first.");
+//     } else {
+//         alert(`Thank you for your order! Processing ${totalItems} items.`);
+//         // Reset cart after buying
+//         for (let key in cart) cart[key] = 0;
+//         renderProducts();
+//         updateSidebar();
+//     }
+// }
 
 // Open Modal on Checkout
-function checkout() {
+async function checkout() {
     const totalItems = document.getElementById('totalItems').innerText;
     const totalAmount = document.getElementById('totalAmount').innerText;
 
@@ -121,6 +121,23 @@ function checkout() {
         return;
     }
 
+    const response = await fetch("/generate_qr", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            totalItems: parseInt(totalItems),
+            totalAmount: totalAmount.replace("$", "")
+        })
+    });
+
+    const data = await response.json();
+
+    // Display QR image
+    document.getElementById("qrImage").src =
+        "data:image/png;base64," + data.qr;
+    
     // Populate order totals inside modal
     document.getElementById('modalTotalItems').innerText = totalItems;
     document.getElementById('modalTotalAmount').innerText = totalAmount;
