@@ -15,7 +15,7 @@ pipeline {
             }
         }
 
-        stage('Deploy to ACI (file share)') {
+        stage('Deploy to Azure File Share') {
             steps {
 
                 withCredentials([
@@ -27,7 +27,7 @@ pipeline {
                         --account-name "$AZ_ACCOUNT" \
                         --account-key "$AZ_KEY" \
                         --destination "$AZ_SHARE" \
-                        --source "./templates" \
+                        --source "." \
                         --pattern "*.html" \
                         --no-progress
                     '''
