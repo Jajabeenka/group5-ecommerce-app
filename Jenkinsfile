@@ -15,7 +15,7 @@ pipeline {
             }
         }
 
-        stage('Deploy to Azure File Share') {
+        stage('Deploy to ACI (file share)') {
             steps {
 
                 withCredentials([
