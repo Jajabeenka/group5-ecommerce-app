@@ -1,0 +1,407 @@
+/* CSS / Styling */
+:root {
+    --primary: #4A332D;
+    --secondary: #8B5E3C;
+    --background: #FDFBF7;
+    --surface: #FFFFFF;
+    --text-dark: #2C1E16;
+    --text-light: #FDFBF7;
+    --accent: #D4A373;
+    --radius: 12px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+body {
+    background-color: var(--background);
+    color: var(--text-dark);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header */
+header {
+    background-color: var(--primary);
+    color: var(--text-light);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.logo-placeholder {
+    width: 40px;
+    height: 40px;
+    background-color: var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+/* Layout */
+.main-container {
+    display: flex;
+    flex: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    gap: 2rem;
+    width: 100%;
+}
+
+/* Grid (3x2) */
+.products-section {
+    flex: 1;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+/* Product Card */
+.product-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 1rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+
+.product-image {
+    width: 100%;
+    aspect-ratio: 1; /* Keeps the images perfectly square */
+    object-fit: cover; /* Prevents the image from stretching or squishing */
+    border-radius: 8px;
+    background-color: #EAE0D5; /* Shows a background color while the image loads */
+}
+
+.product-info {
+    text-align: center;
+}
+
+.product-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+}
+
+.product-price {
+    color: var(--secondary);
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+/* Counter */
+.counter-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: auto;
+}
+
+.btn-count {
+    background: var(--background);
+    border: 1px solid #D1C4E9;
+    color: var(--primary);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.btn-count:hover {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+}
+
+.qty-input {
+    width: 50px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 4px;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 340px;
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 6rem;
+    height: calc(100vh - 8rem);
+}
+
+.sidebar-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+}
+
+.sidebar-title {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--background);
+}
+
+/* Cart Item List in Sidebar */
+.cart-items-list {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+    padding-right: 5px;
+}
+
+.cart-items-list::-webkit-scrollbar {
+    width: 6px;
+}
+.cart-items-list::-webkit-scrollbar-thumb {
+    background-color: var(--accent);
+    border-radius: 10px;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.8rem;
+    font-size: 0.95rem;
+}
+
+.cart-item-name {
+    flex: 1;
+    font-weight: 500;
+}
+
+.cart-item-qty {
+    color: var(--secondary);
+    font-size: 0.85rem;
+    margin: 0 10px;
+    background: var(--background);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.cart-item-price {
+    font-weight: bold;
+    min-width: 50px;
+    text-align: right;
+}
+
+.empty-cart-msg {
+    color: #999;
+    text-align: center;
+    font-style: italic;
+    margin-top: 1rem;
+}
+
+/* Sidebar Totals */
+.summary-totals-container {
+    border-top: 2px dashed #eee;
+    padding-top: 1rem;
+    margin-top: auto;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.summary-total {
+    margin-top: 0.5rem;
+    font-size: 1.3rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    color: var(--primary);
+}
+
+.btn-buy {
+    margin-top: 1.5rem;
+    background-color: var(--secondary);
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+    width: 100%;
+}
+
+.btn-buy:hover {
+    background-color: var(--primary);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .main-container { flex-direction: column; }
+    .product-grid { grid-template-columns: repeat(2, 1fr); }
+    .sidebar { width: 100%; height: auto; position: static; margin-top: 2rem; }
+    .cart-items-list { min-height: 100px; max-height: 250px; }
+}
+@media (max-width: 500px) {
+    .product-grid { grid-template-columns: 1fr; }
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(3px); /* Subtle blur behind modal */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    
+    /* Hidden by default with smooth fade-in */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-content {
+    background: var(--surface);
+    padding: 2rem;
+    border-radius: var(--radius);
+    width: 90%;
+    max-width: 380px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    transform: translateY(-20px);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.active .modal-content {
+    transform: translateY(0);
+}
+
+.close-btn {
+    position: absolute;
+    top: 12px;
+    right: 18px;
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #999;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close-btn:hover {
+    color: var(--text-dark);
+}
+
+.modal-subtitle {
+    color: #777;
+    font-size: 0.9rem;
+    margin-top: 0.3rem;
+    margin-bottom: 1.5rem;
+}
+
+/* QR Code Box */
+.qr-placeholder {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+.qr-box {
+    width: 180px;
+    height: 180px;
+    background-color: var(--background);
+    border: 2px dashed var(--accent);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--secondary);
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 1rem;
+}
+
+.modal-summary {
+    background-color: var(--background);
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: space-around;
+    font-size: 1rem;
+    color: var(--primary);
+}
+
+.btn-done {
+    background-color: var(--secondary);
+    color: white;
+    border: none;
+    padding: 0.9rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.2s;
+}
+
+.btn-done:hover {
+    background-color: var(--primary);
+}
