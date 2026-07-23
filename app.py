@@ -11,7 +11,7 @@ import qrcode
 from qrcode.constants import ERROR_CORRECT_H
 from qrcode.image.styledpil import StyledPilImage
 from qrcode.image.styles.moduledrawers import RoundedModuleDrawer
-from qrcode.image.styles.colormasks import RadialGradientColorMask
+from qrcode.image.styles.colormasks import RadialGradiantColorMask
 
 
 
@@ -48,7 +48,7 @@ def home():
 @app.route("/dashboard")
 
 def dashboard():
-    return render_template("dashboard.html")
+    return render_template("index.html")
 
 @app.route("/generate_qr", methods=["POST"])
 def generate_qr():
@@ -106,6 +106,8 @@ def payment_success():
 
 @app.route('/login', methods=['POST'])
 def login():
+
+    print("LOGIN ROUTE HIT")
     # Accepts input from either JSON (JS fetch) or standard HTML form submit
     data = request.get_json(silent=True) or request.form
 

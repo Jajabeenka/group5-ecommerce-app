@@ -41,17 +41,34 @@
     </div>
 
     <script>
-        function handleLogin(event) {
-            event.preventDefault(); // Stop form from refreshing page
+        async function handleLogin(event) {
+            event.preventDefault();
 
-            // Show success modal
-            const successModal = document.getElementById('successModal');
-            successModal.classList.add('active');
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
 
-            // Redirect directly to index.html after 1.2 seconds
-            setTimeout(() => {
-                window.location.href = "/dashboard";
-            }, 1200);
+            const response = await fetch("/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username: username,
+                    password: password
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                document.getElementById("successModal").classList.add("active");
+
+                setTimeout(() => {
+                    window.location.href = data.redirect;
+                }, 1200);
+            } else {
+                alert(data.message);
+            }
         }
     </script>
 </body>
