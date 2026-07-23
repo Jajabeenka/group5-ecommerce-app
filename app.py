@@ -15,10 +15,10 @@ def home():
 
     return render_template("login.html")
 
-@app.route("/dashboard)
+@app.route("/dashboard")
 
 def dashboard():
-    return render_template(index.html)
+    return render_template("index.html")
 
 @app.route("/generate_qr", methods=["POST"])
 def generate_qr():
