@@ -448,3 +448,77 @@ header {
 #successModal .btn-done:hover{
     background:#3f9142;
 }
+
+/* ==========================================
+   Login Page Styling
+========================================== */
+.login-body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: var(--background);
+}
+
+.login-card {
+    background: var(--surface);
+    padding: 2.5rem;
+    border-radius: var(--radius);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    max-width: 380px;
+    text-align: center;
+}
+
+.login-logo {
+    justify-content: center;
+    margin-bottom: 0.5rem;
+}
+
+.login-subtitle {
+    color: #777;
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    text-align: left;
+    margin-bottom: 1.2rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 0.9rem;
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: var(--background);
+    transition: border-color 0.2s;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--secondary);
+}
+
+.login-btn {
+    margin-top: 1rem;
+}
+
+/* Error Modal Specifics */
+.error-modal-content {
+    border-top: 4px solid #D9534F;
+}
+
+.error-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
