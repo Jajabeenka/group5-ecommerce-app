@@ -124,7 +124,7 @@ async function checkout() {
         },
         body: JSON.stringify({
             totalItems: parseInt(totalItems),
-            totalAmount: totalAmount.replace("$", "")
+            totalAmount: totalAmount.replace("₱", "")
         })
     });
 
