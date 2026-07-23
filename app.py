@@ -33,7 +33,7 @@ def generate_qr():
     total_items = data["totalItems"]
     total_amount = data["totalAmount"]
 
-    payment_url = f"http://44.203.231.247/pay?amt={total_amount}"
+    payment_url = f"http://34.234.163.173/pay?amt={total_amount}"
 
     qr = qrcode.QRCode(
         version=4,
