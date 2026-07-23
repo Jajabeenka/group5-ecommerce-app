@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bean & Brew | Coffee Shop</title>
+    <!-- Links to your separate CSS file -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="logo-container">
+            <div class="logo-placeholder">☕</div>
+            <span>Jared's Coffee</span>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        
+        <!-- Products Grid (3x2) -->
+        <div class="products-section">
+            <div class="product-grid" id="productGrid">
+                <!-- Products injected here via JS -->
+            </div>
+        </div>
+
+        <!-- Right Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-content">
+                <h2 class="sidebar-title">Order Summary</h2>
+                
+                <!-- Dynamic Item List -->
+                <div id="cartItemsList" class="cart-items-list">
+                    <!-- Javascript will populate this -->
+                </div>
+
+                <!-- Totals -->
+                <div class="summary-totals-container">
+                    <div class="summary-row">
+                        <span>Total Items:</span>
+                        <span id="totalItems">0</span>
+                    </div>
+                    <div class="summary-total">
+                        <span>Total:</span>
+                        <span id="totalAmount">$0.00</span>
+                    </div>
+                </div>
+            </div>
+            <button class="btn-buy" onclick="checkout()">Buy Now</button>
+        </div>
+
+    </div>
+
+    <!-- Checkout / QR Code Modal -->
+    <div id="checkoutModal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2>Scan to Pay</h2>
+            <p class="modal-subtitle">Use your banking or payment app to complete the order</p>
+            
+            <!-- QR Code Placeholder -->
+            <div class="qr-placeholder">
+                <img
+                    id="qrImage"
+                    alt="Payment QR"
+                    width="250"
+                    height="250">
+            </div>
+
+            <!-- Order Summary inside Modal -->
+            <div class="modal-summary">
+                <div>Items: <strong id="modalTotalItems">0</strong></div>
+                <div>Total: <strong id="modalTotalAmount">$0.00</strong></div>
+            </div>
+
+            <button class="btn-done" onclick="finishOrder()">I Have Paid</button>
+        </div>
+    </div>
+
+    <!-- Payment Success Modal -->
+<div id="successModal" class="modal-overlay">
+    <div class="modal-content success-modal">
+
+        <div class="success-icon">
+            ✔
+        </div>
+
+        <h2>Payment Successful</h2>
+
+        <p class="modal-subtitle">
+            Your payment has been received successfully.
+        </p>
+
+        <button class="btn-done" onclick="closeSuccessModal()">
+            Continue
+        </button>
+
+    </div>
+</div>
+
+    <!-- Links to your separate JavaScript file -->
+     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <script src="/static/js/script.js"></script>
+</body>
+</html>
