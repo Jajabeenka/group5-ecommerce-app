@@ -2,9 +2,12 @@ import io
 import base64
 import qrcode
 from flask import Flask, render_template,request, jsonify
+from flask_socketio import SocketIO
+
 # 1. Initialize the application
 app = Flask(__name__)
 
+socketio = SocketIO(app, cors_allowed_origins="*")
 # 2. Define a route and its handling function
 @app.route("/")
 
@@ -36,21 +39,17 @@ def generate_qr():
         "qr": qr
     })
 
-@app.route("/payment_success", methods=["POST"])
+@app.route("/payment_success")
 def payment_success():
-    transaction_id = request.args.get("transaction_id")
-    status = request.args.get("status")
 
-    if status == "SUCCESS":
-        print(f"{transaction_id} paid!")
-        # Update your database here
+    txn = request.args.get("txn")
 
-    return jsonify({
-        "message": "received",
-        "transaction_id": transaction_id,
-        "status": status
+    socketio.emit("payment_success", {
+        "transaction": txn
     })
+
+    return "Payment marked successful."
 
 # 3. Run the development server
 if __name__ == "__main__":
-    app.run(debug=True)
+   socketio.run(app, debug=True)
