@@ -13,7 +13,7 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 
 def home():
 
-    return render_template("index.html")
+    return render_template("login.html")
 
 @app.route("/generate_qr", methods=["POST"])
 def generate_qr():
