@@ -1,4 +1,15 @@
 /* JavaScript / Logic */
+const socket = io();
+
+socket.on("connect", () => {
+    console.log("Connected:", socket.id);
+});
+
+socket.on("payment_success", (data) => {
+    console.log("Received payment_success:", data);
+    showSuccessModal();
+});
+
 
 const products = [
     { id: 1, name: "Espress-yo Self", image:"../static/images/espresso.jpg" ,price: 180 },
@@ -97,22 +108,7 @@ function updateSidebar() {
     document.getElementById('totalAmount').innerText = '₱' + totalAmount.toFixed(2);
 }
 
-// Checkout logic
-function checkout() {
-    const totalItems = document.getElementById('totalItems').innerText;
-    if (totalItems == 0) {
-        alert("Your cart is empty! Add some coffee first.");
-    } else {
-        alert(`Thank you for your order! Processing ${totalItems} items.`);
-        // Reset cart after buying
-        for (let key in cart) cart[key] = 0;
-        renderProducts();
-        updateSidebar();
-    }
-}
-
-// Open Modal on Checkout
-function checkout() {
+async function checkout() {
     const totalItems = document.getElementById('totalItems').innerText;
     const totalAmount = document.getElementById('totalAmount').innerText;
 
@@ -121,6 +117,23 @@ function checkout() {
         return;
     }
 
+    const response = await fetch("/generate_qr", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            totalItems: parseInt(totalItems),
+            totalAmount: totalAmount.replace("$", "")
+        })
+    });
+
+    const data = await response.json();
+
+    // Display QR image
+    document.getElementById("qrImage").src =
+        "data:image/png;base64," + data.qr;
+    
     // Populate order totals inside modal
     document.getElementById('modalTotalItems').innerText = totalItems;
     document.getElementById('modalTotalAmount').innerText = totalAmount;
@@ -145,6 +158,28 @@ function finishOrder() {
     renderProducts();
     updateSidebar();
     closeModal();
+}
+
+function showSuccessModal() {
+
+    closeModal();
+    const totalItems = document.getElementById('totalItems').innerText;
+    const totalAmount = document.getElementById('totalAmount').innerText;
+    document.getElementById("successModal")
+        .classList.add("active");
+}
+
+function closeSuccessModal() {
+    document.getElementById("successModal")
+        .classList.remove("active");
+
+     for (let key in cart) {
+        cart[key] = 0;
+    }
+
+    renderProducts();
+    updateSidebar();
+
 }
 
 // Close modal when clicking outside the content box

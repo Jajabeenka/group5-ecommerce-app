@@ -63,9 +63,11 @@
             
             <!-- QR Code Placeholder -->
             <div class="qr-placeholder">
-                <div class="qr-box">
-                    <span>📱 QR CODE PLACEHOLDER</span>
-                </div>
+                <img
+                    id="qrImage"
+                    alt="Payment QR"
+                    width="250"
+                    height="250">
             </div>
 
             <!-- Order Summary inside Modal -->
@@ -78,7 +80,29 @@
         </div>
     </div>
 
+    <!-- Payment Success Modal -->
+<div id="successModal" class="modal-overlay">
+    <div class="modal-content success-modal">
+
+        <div class="success-icon">
+            ✔
+        </div>
+
+        <h2>Payment Successful</h2>
+
+        <p class="modal-subtitle">
+            Your payment has been received successfully.
+        </p>
+
+        <button class="btn-done" onclick="closeSuccessModal()">
+            Continue
+        </button>
+
+    </div>
+</div>
+
     <!-- Links to your separate JavaScript file -->
+     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
     <script src="../static/js/script.js"></script>
 </body>
 </html>

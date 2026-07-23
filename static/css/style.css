@@ -405,3 +405,46 @@ header {
 .btn-done:hover {
     background-color: var(--primary);
 }
+
+/* ===========================
+   Payment Success Modal
+=========================== */
+
+.success-modal{
+    text-align:center;
+}
+
+.success-icon{
+    width:90px;
+    height:90px;
+    margin:0 auto 20px;
+    border-radius:50%;
+    background:#4CAF50;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    color:white;
+    font-size:48px;
+    font-weight:bold;
+
+    box-shadow:0 10px 20px rgba(76,175,80,.25);
+}
+
+.success-modal h2{
+    color:var(--primary);
+    margin-bottom:10px;
+}
+
+.success-modal .modal-subtitle{
+    margin-bottom:25px;
+}
+
+#successModal .btn-done{
+    background:#4CAF50;
+}
+
+#successModal .btn-done:hover{
+    background:#3f9142;
+}
