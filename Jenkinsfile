@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         REGISTRY        = 'jessimey'
-        APP_NAME        = 'e-commerce'
+        APP_NAME        = 'group5-ecommerce-app'
         IMAGE           = "jessimey/group5-ecommerce-app"
         TAG             = "${env.GIT_COMMIT.take(7)}"
         
