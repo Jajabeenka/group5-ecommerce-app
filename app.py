@@ -11,7 +11,7 @@ import qrcode
 from qrcode.constants import ERROR_CORRECT_H
 from qrcode.image.styledpil import StyledPilImage
 from qrcode.image.styles.moduledrawers import RoundedModuleDrawer
-from qrcode.image.styles.colormasks import RadialGradientColorMask
+from qrcode.image.styles.colormasks import RadialGradiantColorMask
 
 # 1. Initialize the application
 app = Flask(__name__)
@@ -70,7 +70,7 @@ def generate_qr():
         # Rounded dots
         module_drawer=RoundedModuleDrawer(),
         # Latte-inspired radial gradient (Fixed typo: RadialGradientColorMask)
-        color_mask=RadialGradientColorMask(
+        color_mask=RadialGradiantColorMask(
             back_color=(247, 242, 236),      # Latte foam
             center_color=(111, 78, 55),      # Coffee brown
             edge_color=(59, 36, 23)          # Espresso
