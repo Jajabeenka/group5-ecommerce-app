@@ -1,6 +1,7 @@
 import io
 import base64
 import requests
+import traceback
 
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 from flask_socketio import SocketIO
@@ -98,34 +99,33 @@ def payment_success():
 @app.route('/login', methods=['POST'])
 def login():
     print("LOGIN ROUTE HIT")
-    data = request.get_json(silent=True) or request.form
 
-    username = data.get('username')
-    password = data.get('password')
+    try:
+        data = request.get_json(silent=True) or request.form
 
-    if not username or not password:
-        if request.is_json:
-            return jsonify({'status': 'failed', 'message': 'Username and password required'}), 400
-        return "Username and password required", 400
+        username = data.get('username')
+        password = data.get('password')
 
-    user = User.query.filter_by(username=username).first()
+        print(f"Trying to login: {username}")
 
-    if not user or user.password != password:
-        if request.is_json:
-            return jsonify({'status': 'failed', 'message': 'Invalid credentials'}), 401
-        return "Invalid username or password", 401
+        user = User.query.filter_by(username=username).first()
 
-    if request.is_json:
+        print(user)
+
+        if not user or user.password != password:
+            return jsonify({
+                "status": "failed",
+                "message": "Invalid credentials"
+            }), 401
+
         return jsonify({
-            'status': 'success',
-            'redirect': url_for('dashboard'),
-            'user': {
-                'id': user.customer_id,
-                'username': user.username
-            }
-        }), 200
+            "status": "success",
+            "redirect": url_for("dashboard")
+        })
 
-    return redirect(url_for('dashboard'))
+    except Exception:
+        traceback.print_exc()
+        raise
 
 # FIX 2: Set debug=False & allow_unsafe_werkzeug=True for Docker stability
 if __name__ == "__main__":
