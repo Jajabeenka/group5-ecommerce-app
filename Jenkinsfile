@@ -32,9 +32,10 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                sh "docker build -t ${IMAGE}:${TAG} -t ${IMAGE}:latest ."
+                sh "DOCKER_BUILDKIT=1 docker build -t ${IMAGE}:${TAG} -t ${IMAGE}:latest ."
             }
         }
+
 
         stage('Docker Push') {
             steps {
