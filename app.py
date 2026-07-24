@@ -11,7 +11,7 @@ import qrcode
 from qrcode.constants import ERROR_CORRECT_H
 from qrcode.image.styledpil import StyledPilImage
 from qrcode.image.styles.moduledrawers import RoundedModuleDrawer
-from qrcode.image.styles.colormasks import RadialGradiantColorMask
+from qrcode.image.styles.colormasks import RadialGradientColorMask
 
 
 
