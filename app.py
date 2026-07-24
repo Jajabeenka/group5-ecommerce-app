@@ -32,7 +32,8 @@ class User(db.Model):
     username = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
 
-socketio = SocketIO(app, cors_allowed_origins="*")
+# FIX 1: Explicitly define async_mode='threading'
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode='threading')
 
 # 2. Define routes
 @app.route("/")
@@ -67,9 +68,7 @@ def generate_qr():
 
     img = qr.make_image(
         image_factory=StyledPilImage,
-        # Rounded dots
         module_drawer=RoundedModuleDrawer(),
-        # Latte-inspired radial gradient (Fixed typo: RadialGradientColorMask)
         color_mask=RadialGradiantColorMask(
             back_color=(247, 242, 236),      # Latte foam
             center_color=(111, 78, 55),      # Coffee brown
@@ -99,7 +98,6 @@ def payment_success():
 @app.route('/login', methods=['POST'])
 def login():
     print("LOGIN ROUTE HIT")
-    # Accepts input from either JSON (JS fetch) or standard HTML form submit
     data = request.get_json(silent=True) or request.form
 
     username = data.get('username')
@@ -110,16 +108,13 @@ def login():
             return jsonify({'status': 'failed', 'message': 'Username and password required'}), 400
         return "Username and password required", 400
 
-    # Query user from MySQL database
     user = User.query.filter_by(username=username).first()
 
-    # Verify user exists and check password
     if not user or user.password != password:
         if request.is_json:
             return jsonify({'status': 'failed', 'message': 'Invalid credentials'}), 401
         return "Invalid username or password", 401
 
-    # Successful login response
     if request.is_json:
         return jsonify({
             'status': 'success',
@@ -132,6 +127,6 @@ def login():
 
     return redirect(url_for('dashboard'))
 
-# 3. Run the development server
+# FIX 2: Set debug=False & allow_unsafe_werkzeug=True for Docker stability
 if __name__ == "__main__":
-    socketio.run(app, host='0.0.0.0', port=5000, debug=True)
+    socketio.run(app, host='0.0.0.0', port=5000, debug=False, allow_unsafe_werkzeug=True)
