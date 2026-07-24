@@ -2,16 +2,16 @@ pipeline {
     agent any
 
     environment {
-        REGISTRY        = 'jessimey'
-        APP_NAME        = 'group5-ecommerce-app'
-        IMAGE           = "jessimey/group5-ecommerce-app"
-        TAG             = "${env.GIT_COMMIT.take(7)}"
+        REGISTRY         = 'jessimey'
+        APP_NAME         = 'group5-ecommerce-app'
+        IMAGE            = 'jessimey/group5-ecommerce-app'
+        TAG              = "${env.GIT_COMMIT.take(7)}"
         
         // Target EC2 Details
-        TARGET_EC2_IP   = '18.233.137.78'          // Target EC2 IP address
-        TARGET_EC2_USER = 'ubuntu'            // SSH username (e.g., ubuntu / ec2-user)
-        CONTAINER_PORT  = '5000'                // Internal Flask port
-        HOST_PORT       = '80'                // Host port mapped on target EC2
+        TARGET_EC2_IP    = '18.233.137.78'
+        TARGET_EC2_USER  = 'ubuntu'
+        CONTAINER_PORT   = '5000'
+        HOST_PORT        = '80'
         
         // Jenkins Credentials IDs
         DOCKER_HUB_CREDS = 'docker-hub-credentials'
@@ -48,20 +48,22 @@ pipeline {
 
         stage('Deploy to EC2 Host') {
             steps {
-                sshagent(['ubuntu']) {
-                    sh '''
-                        ssh -o StrictHostKeyChecking=no ubuntu@18.233.137.78 "
-                            docker pull jessimey/group5-ecommerce-app:${BUILD_NUMBER} || true
-                            docker rm -f group5-ecommerce-app 2>/dev/null || true
-                            docker run -d --name group5-ecommerce-app --restart always -p 80:5000 jessimey/group5-ecommerce-app:latest
+                sshagent(["${SSH_KEY_CREDS}"]) {
+                    sh """
+                        ssh -o StrictHostKeyChecking=no ${TARGET_EC2_USER}@${TARGET_EC2_IP} "
+                            docker pull ${IMAGE}:${TAG}
+                            docker rm -f ${APP_NAME} 2>/dev/null || true
+                            docker run -d --name ${APP_NAME} --restart always -p ${HOST_PORT}:${CONTAINER_PORT} ${IMAGE}:${TAG}
+                            docker image prune -f
                         "
-                    '''
+                    """
                 }
             }
         }
 
         stage('Smoke Test') {
             steps {
+                sh "sleep 5"
                 sh "curl --fail http://${TARGET_EC2_IP}:${HOST_PORT}/health || exit 1"
             }
         }
