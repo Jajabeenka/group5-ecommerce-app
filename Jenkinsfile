@@ -48,7 +48,7 @@ pipeline {
 
         stage('Deploy to EC2 Host') {
             steps {
-                sshagent(['ssh-agent-credentials-id']) {
+                sshagent(['ubuntu']) {
                     sh '''
                         ssh -o StrictHostKeyChecking=no ubuntu@18.233.137.78 "
                             docker pull jessimey/group5-ecommerce-app:${BUILD_NUMBER} || true
