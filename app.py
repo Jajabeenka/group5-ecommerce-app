@@ -13,17 +13,13 @@ from qrcode.image.styledpil import StyledPilImage
 from qrcode.image.styles.moduledrawers import RoundedModuleDrawer
 from qrcode.image.styles.colormasks import RadialGradientColorMask
 
-
-
-
 # 1. Initialize the application
 app = Flask(__name__)
 
-
-DB_HOST="10.0.1.181"
-DB_NAME="group5_ecomdb"
-DB_USER="group5user"
-DB_PASSWORD="group5db123"
+DB_HOST = "10.0.1.181"
+DB_NAME = "group5_ecomdb"
+DB_USER = "group5user"
+DB_PASSWORD = "group5db123"
 
 app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -36,27 +32,26 @@ class User(db.Model):
     username = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
 
-
 socketio = SocketIO(app, cors_allowed_origins="*")
-# 2. Define a route and its handling function
+
+# 2. Define routes
 @app.route("/")
-
 def home():
-
     return render_template("login.html")
 
 @app.route("/dashboard")
-
 def dashboard():
     return render_template("index.html")
 
 @app.route("/generate_qr", methods=["POST"])
 def generate_qr():
+    data = request.get_json(silent=True) or {}
 
-    data = request.get_json()
+    total_items = data.get("totalItems")
+    total_amount = data.get("totalAmount")
 
-    total_items = data["totalItems"]
-    total_amount = data["totalAmount"]
+    if total_amount is None:
+        return jsonify({"error": "Missing totalAmount"}), 400
 
     payment_url = f"http://34.234.163.173/pay?amt={total_amount}"
 
@@ -72,12 +67,10 @@ def generate_qr():
 
     img = qr.make_image(
         image_factory=StyledPilImage,
-
         # Rounded dots
         module_drawer=RoundedModuleDrawer(),
-
-        # Latte-inspired radial gradient
-        color_mask=RadialGradiantColorMask(
+        # Latte-inspired radial gradient (Fixed typo: RadialGradientColorMask)
+        color_mask=RadialGradientColorMask(
             back_color=(247, 242, 236),      # Latte foam
             center_color=(111, 78, 55),      # Coffee brown
             edge_color=(59, 36, 23)          # Espresso
@@ -95,7 +88,6 @@ def generate_qr():
 
 @app.route("/payment_success")
 def payment_success():
-
     txn = request.args.get("txn")
 
     socketio.emit("payment_success", {
@@ -106,7 +98,6 @@ def payment_success():
 
 @app.route('/login', methods=['POST'])
 def login():
-
     print("LOGIN ROUTE HIT")
     # Accepts input from either JSON (JS fetch) or standard HTML form submit
     data = request.get_json(silent=True) or request.form
@@ -122,7 +113,7 @@ def login():
     # Query user from MySQL database
     user = User.query.filter_by(username=username).first()
 
-    # Verify user exists and check password hash
+    # Verify user exists and check password
     if not user or user.password != password:
         if request.is_json:
             return jsonify({'status': 'failed', 'message': 'Invalid credentials'}), 401
@@ -141,7 +132,6 @@ def login():
 
     return redirect(url_for('dashboard'))
 
-
 # 3. Run the development server
 if __name__ == "__main__":
-   socketio.run(app,host='0.0.0.0',port=5000,debug=True)
+    socketio.run(app, host='0.0.0.0', port=5000, debug=True)
