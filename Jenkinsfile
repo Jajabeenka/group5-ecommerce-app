@@ -32,7 +32,7 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                sh "DOCKER_BUILDKIT=1 docker build -t ${IMAGE}:${TAG} -t ${IMAGE}:latest ."
+                 sh "DOCKER_BUILDKIT=0 docker build --no-cache -t ${IMAGE}:${TAG} -t ${IMAGE}:latest ."
             }
         }
 
