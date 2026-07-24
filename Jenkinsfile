@@ -36,7 +36,6 @@ pipeline {
             }
         }
 
-
         stage('Docker Push') {
             steps {
                 withCredentials([usernamePassword(credentialsId: "${DOCKER_HUB_CREDS}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
@@ -62,10 +61,26 @@ pipeline {
             }
         }
 
+        // FIX 3: Smoke test runs over SSH on target host with retry loop + auto docker log output
         stage('Smoke Test') {
             steps {
-                sh "sleep 5"
-                sh "curl --fail http://${TARGET_EC2_IP}:${HOST_PORT}/ || exit 1"
+                sshagent(["${SSH_KEY_CREDS}"]) {
+                    sh """
+                        ssh -o StrictHostKeyChecking=no ${TARGET_EC2_USER}@${TARGET_EC2_IP} "
+                            for i in {1..10}; do
+                                if curl -s --fail http://localhost:${HOST_PORT}/ > /dev/null; then
+                                    echo 'Smoke Test Passed successfully on EC2!'
+                                    exit 0
+                                fi
+                                echo 'App not ready yet, retrying in 3 seconds...'
+                                sleep 3
+                            done
+                            echo 'Smoke test failed after 10 attempts. Container Logs:'
+                            docker logs ${APP_NAME}
+                            exit 1
+                        "
+                    """
+                }
             }
         }
     }
