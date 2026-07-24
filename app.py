@@ -32,9 +32,9 @@ db = SQLAlchemy(app)
 
 class User(db.Model):
     __tablename__ = 'users'
-    id = db.Column(db.Integer, primary_key=True)
+    customer_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
-    password_hash = db.Column(db.String(255), nullable=False)
+    password = db.Column(db.String(255), nullable=False)
 
 
 socketio = SocketIO(app, cors_allowed_origins="*")
@@ -123,7 +123,7 @@ def login():
     user = User.query.filter_by(username=username).first()
 
     # Verify user exists and check password hash
-    if not user or not check_password_hash(user.password_hash, password):
+    if not user or user.password != password:
         if request.is_json:
             return jsonify({'status': 'failed', 'message': 'Invalid credentials'}), 401
         return "Invalid username or password", 401
@@ -134,7 +134,7 @@ def login():
             'status': 'success',
             'redirect': url_for('dashboard'),
             'user': {
-                'id': user.id,
+                'id': user.customer_id,
                 'username': user.username
             }
         }), 200
@@ -144,4 +144,4 @@ def login():
 
 # 3. Run the development server
 if __name__ == "__main__":
-   socketio.run(app,host='0.0.0.0',port=5000,debug=True, allow_unsafe_werkzeug=True)
+   socketio.run(app,host='0.0.0.0',port=5000,debug=True)
