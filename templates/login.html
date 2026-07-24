@@ -40,6 +40,21 @@
         </div>
     </div>
 
+        <!-- Failed Login Modal -->
+    <div id="failedModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="failed-icon">✕</div>
+            <h2>Login Failed</h2>
+            <p id="failedMessage" class="modal-subtitle">
+                Invalid username or password.
+            </p>
+
+            <button class="btn-buy" onclick="closeFailedModal()">
+                Try Again
+            </button>
+        </div>
+    </div>
+
     <script>
         async function handleLogin(event) {
             event.preventDefault();
@@ -53,12 +68,19 @@
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    username: username,
-                    password: password
+                    username,
+                    password
                 })
             });
 
-            const data = await response.json();
+            let data;
+
+            try {
+                data = await response.json();
+            } catch (e) {
+                showFailedModal("Server error. Please try again later.");
+                return;
+            }
 
             if (response.ok) {
                 document.getElementById("successModal").classList.add("active");
@@ -67,9 +89,28 @@
                     window.location.href = data.redirect;
                 }, 1200);
             } else {
-                alert(data.message);
+                showFailedModal(data.message);
             }
         }
+
+        function showFailedModal(message) {
+            document.getElementById("failedMessage").innerText = message;
+            document.getElementById("failedModal").classList.add("active");
+        }
+
+        function closeFailedModal() {
+            document.getElementById("failedModal").classList.remove("active");
+        }
+
+        window.addEventListener("click", function(event) {
+            const failedModal = document.getElementById("failedModal");
+
+            if (event.target === failedModal) {
+                    closeFailedModal();
+                }
+        });
     </script>
+
+
 </body>
 </html>
