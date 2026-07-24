@@ -48,16 +48,14 @@ pipeline {
 
         stage('Deploy to EC2 Host') {
             steps {
-                sshagent([SSH_KEY_CREDS]) {
-                    sh """
-                        ssh -o StrictHostKeyChecking=no ${TARGET_EC2_USER}@${TARGET_EC2_IP} '
-                            docker pull ${IMAGE}:${TAG}
-                            docker stop ${APP_NAME} || true
-                            docker rm ${APP_NAME} || true
-                            docker run -d --name ${APP_NAME} --restart always -p ${HOST_PORT}:${CONTAINER_PORT} ${IMAGE}:${TAG}
-                            docker image prune -f
-                        '
-                    """
+                sshagent(['ssh-agent-credentials-id']) {
+                    sh '''
+                        ssh -o StrictHostKeyChecking=no ubuntu@18.233.137.78 "
+                            docker pull jessimey/group5-ecommerce-app:${BUILD_NUMBER} || true
+                            docker rm -f group5-ecommerce-app 2>/dev/null || true
+                            docker run -d --name group5-ecommerce-app --restart always -p 80:5000 jessimey/group5-ecommerce-app:latest
+                        "
+                    '''
                 }
             }
         }
