@@ -11,7 +11,7 @@ pipeline {
         TARGET_EC2_IP    = '18.233.137.78'
         TARGET_EC2_USER  = 'ubuntu'
         CONTAINER_PORT   = '5000'
-        HOST_PORT        = '80'
+        HOST_PORT        = '5000'
         
         // Jenkins Credentials IDs
         DOCKER_HUB_CREDS = 'docker-hub-credentials'
